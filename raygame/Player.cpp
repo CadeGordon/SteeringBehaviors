@@ -22,7 +22,12 @@ void Player::update(float deltaTime)
 {
 	Actor::update(deltaTime);
 
+	//adds in the direction from player input into a move direction
 	MathLibrary::Vector2 moveDirection = m_inputComponent->getMoveAxis();
+
+	//if the velocity is greater than 0, the transform will move according to the move direction
+	if (m_moveComponent->getVelocity().getMagnitude() > 0)
+		getTransform()->setForward(m_moveComponent->getVelocity());
 
 	m_moveComponent->setVelocity(moveDirection * 500);
 }
