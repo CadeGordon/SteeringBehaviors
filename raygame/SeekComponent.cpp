@@ -1,20 +1,35 @@
-//#include "SeekComponent.h"
-//#include "MoveComponent.h"
-//#include <iostream>
-//#include "Engine.h"
-//#include "Transform2D.h"
-//#include "Actor.h"
-//
-//void SeekComponent::start()
-//{
-//	m_moveComponent = dynamic_cast<MoveComponent*>(addComponent(new MoveComponent()));
-//	m_moveComponent->setMaxSpeed(10);
-//}
-//
-//void SeekComponent::update(float deltaTime)
-//{
-//	//according to the target's position, the enemy will move towards that position according to the enemy's position
-//	MathLibrary::Vector2 moveDirection = (m_target->getTransform()->getLocalPosition() - getTransform()->getLocalPosition());
-//	m_moveComponent->setVelocity(moveDirection.getNormalized() * 200); 
-//}
+#include "SeekComponent.h"
+#include "Transform2D.h"
+#include "Actor.h"
+#include <Vector2.h>
+#include "MoveComponent.h"
 
+SeekComponent::SeekComponent(Actor* target, const char* name) : Component::Component(name)
+{
+	Component::start();
+
+	m_target = target;
+	m_seekForce = 0.5f;
+	m_maxSpeed = 5;
+	m_currentVelocity = MathLibrary::Vector2{ 0,0 };
+}
+
+void SeekComponent::update(float deltaTime)
+{
+	Component::update(deltaTime);
+
+	m_desiredVelocity = MathLibrary::Vector2(getTarget()->getTransform()->getWorldPosition() - getOwner()->getTransform()->getWorldPosition()).normalize() * m_seekForce;
+
+	m_steeringForce = m_desiredVelocity - m_currentVelocity;
+
+	m_currentVelocity = m_currentVelocity + (m_steeringForce * deltaTime);
+
+	MathLibrary::Vector2 newPosition = getOwner()->getTransform()->getWorldPosition();
+
+	newPosition = newPosition + (m_currentVelocity * deltaTime);
+
+	MoveComponent* moveComponent = dynamic_cast<MoveComponent*>(getOwner()->getComponent("MoveComponent"));
+
+	getOwner()->getTransform()->setWorldPostion(newPosition);
+
+}
