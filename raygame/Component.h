@@ -9,12 +9,10 @@ class Component
 public:
 	Component();
 	virtual ~Component();
-	Component(const char* name);
 
 	/// <summary>
 	/// Gets the name of this component instance
 	/// </summary>
-	const char* getName() { return m_name; }
 
 
 	/// <summary>
@@ -47,7 +45,6 @@ public:
 private:
 
 	Actor* m_owner;
-	const char* m_name;
 	bool m_started;
 
 

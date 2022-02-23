@@ -7,12 +7,12 @@
 
 
 
-SpriteComponent::SpriteComponent(Texture2D* texture, const char* name) : Component::Component(name)
+SpriteComponent::SpriteComponent(Texture2D* texture) : Component::Component()
 {
 	m_texture = texture;
 }
 
-SpriteComponent::SpriteComponent(const char* path, const char* name) : Component::Component(name)
+SpriteComponent::SpriteComponent(const char* path) : Component::Component()
 {
 	m_texture = new Texture2D(RAYLIB_H::LoadTexture(path));
 }

@@ -33,11 +33,7 @@ public:
     /// <param name="collider">The new collider to attach to the actor</param>
     void setCollider(Collider* collider) { m_collider = collider; }
 
-    /// <summary>
-    /// Gets the name of this actor
-    /// </summary>
-    /// <returns></returns>
-    const char* getName() { return m_name; }
+    
 
     /// <summary>
     /// 
@@ -89,14 +85,17 @@ public:
     /// </summary>
     /// <param name="component">the new component to attack to the actor</param>
     /// <returns>A reference to the component added to the array</returns>
-    Component* addComponent(Component* component);
+    template<typename T>
+    T* addComponent();
 
+    Component* addComponent(Component* component);
 
     /// <summary>
     /// Removes the first instacne found that matches the component reference
     /// </summary>
     /// <param name="component">The compoenet to remove from the array</param>
     /// <returns>False if the component is not in the array</returns>
+    
     bool removeComponent(Component* component);
 
 
@@ -105,7 +104,8 @@ public:
     /// </summary>
     /// <param name="component">The compoenet to remove from the array</param>
     /// <returns>False if the component is not in the array</returns>
-    bool removeComponent(const char* name);
+    template<typename T>
+    bool removeComponent();
 
 
     /// <summary>
@@ -114,7 +114,8 @@ public:
     /// </summary>
     /// <param name="componentName">The name of the component instance</param>
     /// <returns>the name of the component instance</returns>
-    Component* getComponent(const char* componentName);
+    template<typename T>
+    T* getComponent();
 
 
     
@@ -132,3 +133,89 @@ private:
     
 };
 
+template<typename T>
+inline T* Actor::addComponent()
+{
+    T* component = new T();
+    //Retunr null if this compoent has an owner already
+    Actor* owner = component->getOwner();
+    if (owner)
+        return nullptr;
+
+    component->assignOwner(this);
+
+    //Create a new array with a size one greater than our old array
+    Component** tempArray = new Component * [m_componentCount + 1];
+
+    //Copy the values from the old array to the new array
+    for (int i = 0; i < m_componentCount; i++)
+    {
+        tempArray[i] = m_comp[i];
+
+    }
+
+    //Set the last value in the new array to be the actor we want to add
+    tempArray[m_componentCount] = component;
+    if (m_componentCount > 1)
+        //set old array to hold the values of the new array
+        delete[] m_comp;
+    else if (m_componentCount == 1)
+        delete m_comp;
+
+    m_comp = tempArray;
+    m_componentCount++;
+
+    return (T*)component;
+}
+
+template<typename T>
+inline bool Actor::removeComponent()
+{
+    bool componentRemoved = false;
+
+    Component** newArray = new Component * [m_componentCount - 1];
+
+    int j = 0;
+
+    for (int i = 0; i < m_componentCount; i++)
+    {
+        T* temp = dynamic_cast<T*>(m_comp[i]);
+        if (!temp)
+        {
+            newArray[j] = m_comp[i];
+            j++;
+        }
+        else
+        {
+            componentRemoved = true;
+        }
+    }
+    
+    if (componentRemoved)
+    {
+        //Set the old array to the new array
+        m_comp = newArray;
+        m_componentCount--;
+
+    }
+
+    //retunr whether or not the removal was successful
+    return componentRemoved;
+}
+
+template<typename T>
+inline T* Actor::getComponent()
+{
+    //Iterate through the component array
+    for (int i = 0; i < m_componentCount; i++)
+    {
+        T* temp = dynamic_cast<T*>(m_comp[i]);
+        //Retunr the component if the name is the same as the current component
+        if (temp)
+            return (T*)m_comp[i];
+
+    }
+
+    //Return nullptr if the compoent is not in the list
+    return nullptr;
+}

@@ -9,7 +9,7 @@ class SeekComponent :
 	public Component
 {
 public:
-	SeekComponent(Actor* target, const char* name = "Seek Component");
+	SeekComponent(Actor* target);
 
 	void setTarget(Actor* target) { m_target = target; }
 	Actor* getTarget() { return m_target; }

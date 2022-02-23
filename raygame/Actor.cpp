@@ -37,6 +37,8 @@ void Actor::onCollision(Actor* other)
         m_comp[i]->onCollision(other);
 }
 
+
+
 Component* Actor::addComponent(Component* component)
 {
     //Retunr null if this compoent has an owner already
@@ -53,7 +55,7 @@ Component* Actor::addComponent(Component* component)
     for (int i = 0; i < m_componentCount; i++)
     {
         tempArray[i] = m_comp[i];
-       
+
     }
 
     //Set the last value in the new array to be the actor we want to add
@@ -63,7 +65,7 @@ Component* Actor::addComponent(Component* component)
         delete[] m_comp;
     else if (m_componentCount == 1)
         delete m_comp;
-    
+
     m_comp = tempArray;
     m_componentCount++;
 
@@ -108,61 +110,9 @@ bool Actor::removeComponent(Component* component)
     return componentRemoved;
 }
 
-bool Actor::removeComponent(const char* name)
-{
-    if (!name)
-        return false;
-
-    bool componentRemoved = false;
-    Component* componentToDelete = nullptr;
-
-    Component** newArray = new Component * [m_componentCount - 1];
-
-    int j = 0;
-
-    for (int i = 0; i < m_componentCount; i++)
-    {
-        if (strcmp(m_comp[i]->getName(), name) == 0)
-        {
-            newArray[j] = m_comp[i];
-            j++;
-        }
-        else
-        {
-            componentRemoved = true;
-            componentToDelete = m_comp[i];
-        }
-    }
 
 
-    if (componentRemoved)
-    {
-        //Set the old array to the new array
-        m_comp = newArray;
-        m_componentCount--;
-        delete componentToDelete;
 
-    }
-
-    delete[] newArray;
-
-    //retunr whether or not the removal was successful
-    return componentRemoved;
-}
-
-Component* Actor::getComponent(const char* componentName)
-{
-    //Iterate through the component array
-    for (int i = 0; i < m_componentCount; i++)
-    {
-        //Retunr the component if the name is the same as the current component
-        if (strcmp(m_comp[i]->getName(), componentName) == 0 )
-            return m_comp[i];
-    }
-
-    //Return nullptr if the compoent is not in the list
-    return nullptr;
-}
 
 void Actor::update(float deltaTime)
 {

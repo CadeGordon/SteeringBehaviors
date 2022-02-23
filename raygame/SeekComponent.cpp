@@ -4,7 +4,7 @@
 #include <Vector2.h>
 #include "MoveComponent.h"
 
-SeekComponent::SeekComponent(Actor* target, const char* name) : Component::Component(name)
+SeekComponent::SeekComponent(Actor* target)
 {
 	Component::start();
 
@@ -28,7 +28,7 @@ void SeekComponent::update(float deltaTime)
 
 	newPosition = newPosition + (m_currentVelocity * deltaTime);
 
-	MoveComponent* moveComponent = dynamic_cast<MoveComponent*>(getOwner()->getComponent("MoveComponent"));
+	MoveComponent* moveComponent = dynamic_cast<MoveComponent*>(getOwner());
 
 	getOwner()->getTransform()->setWorldPostion(newPosition);
 

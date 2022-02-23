@@ -15,12 +15,12 @@ public:
 
 	/// <param name="texture">Sets the sprites image to be this texture</param>
 	/// <param name="name">The name of teh component instacne</param>
-	SpriteComponent(Texture2D* texture, const char* name = "SpriteComponent");
+	SpriteComponent(Texture2D* texture);
 
 
 	/// <param name="path">The path of the texture to load</param>
 	/// <param name="name"></param>
-	SpriteComponent(const char* path, const char* name = "SpriteComponent");
+	SpriteComponent(const char* path);
 
 	~SpriteComponent() override;
 

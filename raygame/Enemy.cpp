@@ -45,7 +45,7 @@ void Enemy::onCollision(Actor* other)
 {
 	//when the enemy collides with bullet the enemy is removed 
 
-	if (other->getName() == "Bullet")
+	if (other)
 	{
 		Engine::destroy(other);
 	}
