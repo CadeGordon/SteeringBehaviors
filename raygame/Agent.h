@@ -1,16 +1,25 @@
 #pragma once
 #include "Actor.h"
+#include "ActorArray.h"
+#include <Vector2.h>
+class MoveComponent;
+class SteeringComponent;
+
 class Agent :
 	public Actor
 {
 public:
-	Agent();
-	~Agent();
-
-	Actor* getTarget() { return m_target; }
+	void start() override;
+	void update(float deltaTime) override;
+	void onAddComponent(Component* component) override;
+	float getMaxForce() { return m_maxForce; }
+	void setMaxForce(float maxForce) { m_maxForce = maxForce; }
+	MoveComponent* getMoveComponent() { return m_moveComponent; }
 
 private:
-	Actor* m_target;
-
+	DynamicArray<SteeringComponent*> m_steeringComponents;
+	float m_maxForce;
+	MoveComponent* m_moveComponent;
+	MathLibrary::Vector2 m_force;
 };
 

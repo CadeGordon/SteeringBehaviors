@@ -2,7 +2,7 @@
 #include "Actor.h"
 
 class SpriteComponent;
-class SeekComponent;
+class FleeComponent;
 class MoveComponent;
 
 class FleeEnemy :
@@ -17,7 +17,7 @@ public:
 private:
 	Actor* m_target;
 	SpriteComponent* m_spriteComponent;
-	SeekComponent* m_seekComponent;
+	FleeComponent* m_fleeComponent;
 	MoveComponent* m_moveComponent;
 };
 

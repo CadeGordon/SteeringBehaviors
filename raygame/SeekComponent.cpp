@@ -33,3 +33,5 @@ void SeekComponent::update(float deltaTime)
 	getOwner()->getTransform()->setWorldPostion(newPosition);
 
 }
+
+

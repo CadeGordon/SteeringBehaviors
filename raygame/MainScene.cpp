@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "SeekEnemey.h"
+#include "FleeEnemy.h"
 
 void MainScene::start()
 {
@@ -22,4 +23,9 @@ void MainScene::start()
 
 	seeker->getTransform()->setScale({ 50,50 });
 	addActor(seeker);
+
+	FleeEnemy* fleeMaN = new FleeEnemy(50, 50, "Flee Man", player);
+
+	fleeMaN->getTransform()->setScale({ 50,50 });
+	addActor(fleeMaN);
 }
