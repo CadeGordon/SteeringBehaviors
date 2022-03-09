@@ -157,10 +157,11 @@ inline T DynamicArray<T>::operator[](int index)
 	//Return false if the index is out of bounds
 	if (index < 0 || index >= m_length)
 	{
-		return m_items[index];
+		throw std::exception("index was outside the bounds of the array");
 	}
 
-	throw std::exception("index was outside the bounds of the array");
+	
+	return m_items[index];
 }
 
 template<typename T>

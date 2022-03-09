@@ -3,9 +3,11 @@
 #include "MoveComponent.h"
 #include "Transform2D.h"
 #include "Player.h"
-#include "Enemy.h"
-#include "SeekEnemey.h"
-#include "FleeEnemy.h"
+#include "Agent.h"
+#include "WanderComponent.h"
+#include"SeekComponent.h"
+#include "StateMachineComponent.h"
+#include "Actor.h"
 
 void MainScene::start()
 {
@@ -14,18 +16,22 @@ void MainScene::start()
 	player->getTransform()->setScale({ 50,50 });
 	addActor(player);
 
-	Enemy* enemy = new Enemy(100, 100, "Enemy", player);
 
-	enemy->getTransform()->setScale({ 50,50 });
-	//addActor(enemy);
 
-	SeekEnemey* seeker = new SeekEnemey(50, 50, "Seeker", player);
+	Agent* agent = new Agent();
+	agent->getTransform()->setScale({ 50,50 });
+	agent->setMaxForce(1000);
+	agent->addComponent(new SpriteComponent("images/enemy.png"));
 
-	seeker->getTransform()->setScale({ 50,50 });
-	addActor(seeker);
+	SeekComponent* seekComponent = new SeekComponent();
+	seekComponent->setSteeringForce(100);
+	seekComponent->setTarget(player);
+	agent->addComponent(seekComponent);
+	agent->addComponent<StateMachineComponent>();
 
-	FleeEnemy* fleeMaN = new FleeEnemy(50, 50, "Flee Man", player);
+	WanderComponent* wanderComponent = new WanderComponent(1000, 500, 300);
+	agent->addComponent(wanderComponent);
 
-	fleeMaN->getTransform()->setScale({ 50,50 });
-	addActor(fleeMaN);
+	addActor(player);
+	addActor(agent);
 }

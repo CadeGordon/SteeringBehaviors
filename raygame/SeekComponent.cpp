@@ -3,35 +3,23 @@
 #include "Actor.h"
 #include <Vector2.h>
 #include "MoveComponent.h"
+#include "Agent.h"
 
-SeekComponent::SeekComponent(Actor* target)
+
+MathLibrary::Vector2 SeekComponent::calculateForce()
 {
-	Component::start();
+	if (!getTarget())
+		return { 0,0 };
 
-	m_target = target;
-	m_seekForce = 0.5f;
-	m_maxSpeed = 5;
-	m_currentVelocity = MathLibrary::Vector2{ 0,0 };
-}
+	setSteeringForce(500);
 
-void SeekComponent::update(float deltaTime)
-{
-	Component::update(deltaTime);
+	MathLibrary::Vector2 directionToTarget = getTarget()->getTransform()->getWorldPosition()
+		- getOwner()->getTransform()->getWorldPosition();
 
-	m_desiredVelocity = MathLibrary::Vector2(getTarget()->getTransform()->getWorldPosition() - getOwner()->getTransform()->getWorldPosition()).normalize() * m_seekForce;
+	MathLibrary::Vector2 desriredVelocity = directionToTarget.getNormalized() * getSteeringForce();
+	MathLibrary::Vector2 seekForce = desriredVelocity - getAgent()->getMoveComponent()->getVelocity();
 
-	m_steeringForce = m_desiredVelocity - m_currentVelocity;
-
-	m_currentVelocity = m_currentVelocity + (m_steeringForce * deltaTime);
-
-	MathLibrary::Vector2 newPosition = getOwner()->getTransform()->getWorldPosition();
-
-	newPosition = newPosition + (m_currentVelocity * deltaTime);
-
-	MoveComponent* moveComponent = dynamic_cast<MoveComponent*>(getOwner());
-
-	getOwner()->getTransform()->setWorldPostion(newPosition);
-
+	return seekForce;
 }
 
 
