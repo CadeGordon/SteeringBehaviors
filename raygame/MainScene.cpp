@@ -8,6 +8,7 @@
 #include"SeekComponent.h"
 #include "StateMachineComponent.h"
 #include "Actor.h"
+#include "Enemy.h"
 
 void MainScene::start()
 {
@@ -16,22 +17,11 @@ void MainScene::start()
 	player->getTransform()->setScale({ 50,50 });
 	addActor(player);
 
+	Enemy* enemy = new Enemy(200, 300, "Enemy", 100, 100, player);
 
-
-	Agent* agent = new Agent();
-	agent->getTransform()->setScale({ 50,50 });
-	agent->setMaxForce(1000);
-	agent->addComponent(new SpriteComponent("images/enemy.png"));
-
-	SeekComponent* seekComponent = new SeekComponent();
-	seekComponent->setSteeringForce(100);
-	seekComponent->setTarget(player);
-	agent->addComponent(seekComponent);
-	agent->addComponent<StateMachineComponent>();
-
-	WanderComponent* wanderComponent = new WanderComponent(1000, 500, 300);
-	agent->addComponent(wanderComponent);
+	Agent* agent = new Agent(50, 50, "Agent", 100, 50);
+	
 
 	addActor(player);
-	addActor(agent);
+	addActor(enemy);
 }

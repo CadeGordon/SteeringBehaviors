@@ -1,23 +1,28 @@
 #pragma once
-#include "Actor.h"
-class MoveComponent;
-class SpriteComponent;
+#include "Agent.h"
+#include "SeekComponent.h"
+#include "WanderComponent.h"
+#include "SpriteComponenet.h"
 
 
 class Enemy :
-	public Actor
+	public Agent
 {
 public:
-	Enemy(float x, float y, const char* name, Actor* target) : Actor(x, y, name) { m_target = target; }
-
+	Enemy(float x, float y, const char* name, float maxForce, float maxSpeed, Actor* target);
 	void start() override;
-	void update(float deltaTime) override;
-	void onCollision(Actor* other) override;
+
+	bool getTargetInRange();
+
+
+	Actor* getTarget() { return m_target; }
+	void setTarget(Actor* target) { m_target = target; }
+
+	bool getIsAggressive() { return m_isAggressive; }
+	void setIsAggressive(bool value) { m_isAggressive = value; }
 
 private:
 	Actor* m_target;
-	MoveComponent* m_moveComponent;
-	SpriteComponent* m_spriteComponent;
-	
+	bool m_isAggressive;
 };
 

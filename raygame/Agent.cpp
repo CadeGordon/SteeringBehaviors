@@ -2,12 +2,18 @@
 #include "MoveComponent.h"
 #include "SteeringComponent.h"
 
+Agent::Agent(float x, float y, const char* name, float maxForce, float maxSpeed) : Actor(x, y, name)
+{
+	setMaxForce(maxForce);
+	m_moveComponent = addComponent<MoveComponent>();
+	m_moveComponent->setMaxSpeed(500);
+}
+
 void Agent::start()
 {
 	Actor::start();
 
-	m_moveComponent = addComponent<MoveComponent>();
-	m_moveComponent->setMaxSpeed(500);
+	
 	m_moveComponent->setUpdateFacing(true);
 }
 
