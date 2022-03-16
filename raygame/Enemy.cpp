@@ -46,7 +46,9 @@ void Enemy::start()
 
 bool Enemy::getTargetInRange()
 {
-	float distance = (m_target->getTransform()->getWorldPosition() - getTransform()->getWorldPosition()).getMagnitude();
+	float distance = (m_target->getTransform()->getWorldPosition() - 
+		getTransform()->getWorldPosition()).getMagnitude();
+
 	return distance <= 100;
 }
 
