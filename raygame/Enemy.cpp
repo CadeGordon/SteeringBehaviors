@@ -49,6 +49,23 @@ bool Enemy::getTargetInRange()
 	float distance = (m_target->getTransform()->getWorldPosition() - 
 		getTransform()->getWorldPosition()).getMagnitude();
 
+
+
 	return distance <= 100;
+}
+
+bool Enemy::getTargetInSite()
+{
+	float distance = (m_target->getTransform()->getWorldPosition() -
+		getTransform()->getWorldPosition()).getMagnitude();
+
+	MathLibrary::Vector2 direction = (m_target->getTransform()->getWorldPosition() -
+		getTransform()->getWorldPosition()).getNormalized();
+
+
+
+
+	return distance <= 300 && acos(MathLibrary::Vector2::dotProduct(direction, getTransform()->getForward())) < 1;
+
 }
 
